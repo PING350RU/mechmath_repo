@@ -26,3 +26,41 @@ jordan n m k [filename]
 Задание не конкретизирует вид матричной нормы: здесь выбрана норма Фробениуса. Если на курсе принята другая, согласуй её с преподавателем.
 
 Порог `1e-15` — для очень маленького ведущего элемента; Формула 4 задаёт плохо обусловленную матрицу Гильберта
+
+## Сборка в PowerShell (Windows, MSYS2 UCRT64)
+
+```powershell
+cmake -S . -B build -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+```
+
+Если папка `build` осталась от другой CMake-конфигурации, можно удалить её и выполнить команды заново:
+
+```powershell
+Remove-Item -Recurse -Force build
+```
+
+## Запуск
+
+Все параметры передаются в командной строке:
+
+```text
+jordan n m k [filename]
+```
+
+`n` — размер матрицы; `m` — число выводимых строк/столбцов; `k` — номер формулы от 1 до 4; при `k=0` нужно имя файла.
+
+```powershell
+.\build\jordan.exe 2 2 0 sample.txt
+.\build\jordan.exe 2 2 0 swap.txt
+.\build\jordan.exe 4 4 1
+.\build\jordan.exe 2000 6 1
+```
+
+Относительный путь к `sample.txt` определяется текущей папкой терминала. Команды предполагают, что терминал открыт в корне проекта.
+
+Проверка вырожденной матрицы:
+
+```powershell
+.\build\jordan.exe 2 2 0 singular.txt
+```
